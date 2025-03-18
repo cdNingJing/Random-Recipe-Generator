@@ -6,28 +6,53 @@ async function startDraw() {
     if (isAnimating) return;
     isAnimating = true;
     
+    // 停止当前正在播放的视频
+    const activeVideoPlayer = document.querySelector('.video-player[style*="display: block"]');
+    if (activeVideoPlayer) {
+        const iframe = activeVideoPlayer.querySelector('iframe');
+        if (iframe) {
+            iframe.src = 'about:blank';
+        }
+    }
+    
     const cardContainer = document.getElementById('cardDrawContainer');
     const cardStage = document.getElementById('cardStage');
     const loadingElement = document.getElementById('loading');
+    const recipeElement = document.getElementById('recipe');
     
     // 重置状态
     cardStage.innerHTML = '';
     cardStage.classList.remove('final-layout');
     cardContainer.classList.add('visible');
     loadingElement.classList.add('visible');
+    recipeElement.innerHTML = '';  // 清空菜谱内容
     
     try {
         currentMeals = await fetchRandomRecipes(5);
         loadingElement.classList.remove('visible');
         
-        // 创建所有卡片
-        const positions = [
-            { x: "-480px" },
-            { x: "-280px" },
-            { x: "0px" },
-            { x: "280px" },
-            { x: "480px" }
-        ];
+        // 计算发牌位置
+        const cardWidth = 280; // 卡片宽度
+        const containerWidth = Math.min(window.innerWidth, 1600); // 容器宽度，最大1600px
+        const availableWidth = containerWidth - 40; // 减去左右边距
+        
+        // 计算重叠距离
+        const overlap = Math.max(
+            0,
+            ((cardWidth * 5) - availableWidth) / 4 // 4是卡片间隔数
+        );
+        
+        // 计算实际间距（可能为负数，表示重叠）
+        const spacing = (availableWidth - cardWidth * 5) / 4;
+        
+        // 计算起始位置，确保居中
+        const totalWidth = cardWidth * 5 + spacing * 4;
+        const startX = -totalWidth / 2;
+        
+        // 生成位置数组
+        const positions = Array.from({ length: 5 }, (_, i) => ({
+            x: `${startX + i * (cardWidth + spacing)}px`
+        }));
         
         // 第一阶段：发牌
         for (let i = 0; i < currentMeals.length; i++) {
@@ -96,9 +121,53 @@ function createCard(meal, index) {
     
     card.innerHTML = `
         <div class="card-front">
-            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" style="width: 100%; height: 200px; object-fit: cover; border-radius: 15px 15px 0 0;">
-            <div class="card-content" style="padding: 15px;">
-                <div class="card-title" style="font-size: 16px; font-weight: bold; color: #333;">${meal.strMeal}</div>
+            <img src="${meal.strMealThumb}" alt="${meal.strMeal}" style="width: 100%; height: 180px; object-fit: cover; border-radius: 15px 15px 0 0;">
+            <div class="card-content" style="
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            ">
+                <div class="card-title" style="
+                    font-family: 'Inter', sans-serif;
+                    font-size: 20px; 
+                    font-weight: 600; 
+                    color: #1a202c;
+                    line-height: 1.4;
+                    letter-spacing: -0.01em;
+                    -webkit-font-smoothing: antialiased;
+                    text-rendering: optimizeLegibility;
+                ">${meal.strMeal}</div>
+                <div class="card-meta" style="
+                    display: flex; 
+                    gap: 8px; 
+                    font-size: 15px; 
+                    color: #4a5568;
+                    font-family: 'Inter', sans-serif;
+                    font-weight: 500;
+                ">
+                    <div class="meta-item" style="
+                        display: flex; 
+                        align-items: center; 
+                        gap: 4px;
+                    ">
+                        <i class="fas fa-globe" style="color: #3498db; font-size: 15px;"></i>
+                        <span style="
+                            white-space: nowrap;
+                        ">${meal.strArea}</span>
+                    </div>
+                    <span style="color: #cbd5e0;">•</span>
+                    <div class="meta-item" style="
+                        display: flex; 
+                        align-items: center; 
+                        gap: 4px;
+                    ">
+                        <i class="fas fa-tag" style="color: #3498db; font-size: 15px;"></i>
+                        <span style="
+                            white-space: nowrap;
+                        ">${meal.strCategory}</span>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-back">

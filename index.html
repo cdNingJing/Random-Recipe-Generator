@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Random Recipe Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/cards.css">
@@ -36,7 +39,12 @@
             <div class="recipe-card" id="recipe"></div>
 
             <div class="history-panel" id="history">
-                <h3>Recently Viewed</h3>
+                <div class="history-header">
+                    <h3>Recently Viewed</h3>
+                    <button class="btn-clear-history" onclick="clearHistory()" title="清除历史记录">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
                 <div id="history-list"></div>
             </div>
         </div>

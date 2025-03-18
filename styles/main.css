@@ -31,7 +31,7 @@ body {
 
 .header.minimized {
     padding: 20px 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     transform: translateY(-20px);
 }
 
@@ -68,30 +68,50 @@ body {
     background: linear-gradient(135deg, #3498db, #2980b9);
     color: white;
     border: none;
-    padding: 12px 24px;
+    padding: 14px 28px;
     font-size: 1.2em;
-    border-radius: 8px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3),
+                0 2px 4px rgba(41, 128, 185, 0.2);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-draw:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(135deg, #2980b9, #2c3e50);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(52, 152, 219, 0.5),
+                0 6px 12px rgba(41, 128, 185, 0.4),
+                0 2px 4px rgba(41, 128, 185, 0.2);
 }
 
 .btn-draw:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2),
+                0 1px 2px rgba(41, 128, 185, 0.1);
 }
 
 .btn-draw i {
-    font-size: 1.2em;
+    font-size: 1.3em;
+    position: relative;
+    z-index: 1;
+    transform: rotate(0deg);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-draw:hover i {
+    transform: rotate(180deg);
+}
+
+.btn-draw span {
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 .content-area {
@@ -212,6 +232,53 @@ body {
 .ingredient-item i {
     color: #4a90e2;
     font-size: 0.9em;
+}
+
+@media (max-width: 768px) {
+    .ingredients-section {
+        padding: 20px 16px;
+        margin: 24px 0;
+    }
+
+    .ingredients-section h3 {
+        font-size: 1.2em;
+        margin-bottom: 16px;
+    }
+
+    .ingredients-list {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .ingredient-item {
+        padding: 10px 12px;
+        font-size: 0.9em;
+    }
+
+    .ingredient-item i {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    .ingredients-section {
+        padding: 16px 12px;
+        margin: 20px 0;
+    }
+
+    .ingredients-section h3 {
+        font-size: 1.1em;
+        margin-bottom: 12px;
+    }
+
+    .ingredient-item {
+        padding: 8px 10px;
+        font-size: 0.85em;
+    }
+
+    .ingredient-item i {
+        font-size: 0.8em;
+    }
 }
 
 .instructions-section {
@@ -364,17 +431,37 @@ body {
 }
 
 .history-panel {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-top: 40px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.history-panel h3 {
-    margin: 0 0 16px 0;
-    color: #2c3e50;
-    font-size: 1.4em;
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.history-header h3 {
+    margin: 0;
+    color: #333;
+}
+
+.btn-clear-history {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 4px 8px;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.btn-clear-history:hover {
+    color: #dc3545;
 }
 
 #history-list {

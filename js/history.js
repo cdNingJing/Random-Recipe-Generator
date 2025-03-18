@@ -38,7 +38,14 @@ function updateHistoryPanel() {
         const timeAgo = getTimeAgo(new Date(item.timestamp));
         const historyItem = document.createElement("div");
         historyItem.className = "history-item";
-        historyItem.onclick = () => loadRecipeById(item.idMeal);
+        historyItem.onclick = () => {
+            loadRecipeById(item.idMeal);
+            // 平滑滚动到顶部
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        };
         
         historyItem.innerHTML = `
             <img src="${item.strMealThumb}" alt="${item.strMeal}">
@@ -94,4 +101,11 @@ window.addEventListener('load', () => {
         recipeHistory = JSON.parse(savedHistory);
         updateHistoryPanel();
     }
-}); 
+});
+
+function clearHistory() {
+    if (confirm("确定要清除所有历史记录吗？")) {
+        localStorage.removeItem(HISTORY_KEY);
+        updateHistoryPanel();
+    }
+} 

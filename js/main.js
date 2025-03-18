@@ -110,6 +110,12 @@ async function renderRecipe(meal) {
     
     // 保存到历史记录
     saveToHistory(meal);
+
+    // 平滑滚动到顶部
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
 
 // 播放视频
@@ -119,9 +125,10 @@ function playVideo(videoId) {
     const iframeElement = playerElement.querySelector('iframe');
     
     try {
-        // 设置视频URL时添加额外参数以优化加载
-        const videoUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+        // 设置视频URL时添加必要的参数以支持自动播放
+        const videoUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&mute=1&enablejsapi=1`;
         iframeElement.src = videoUrl;
+        iframeElement.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         
         // 隐藏缩略图，显示播放器
         thumbnailElement.style.display = 'none';
@@ -133,7 +140,7 @@ function playVideo(videoId) {
             <div style="display: flex; align-items: center; justify-content: center; height: 100%; background: #f8f9fa;">
                 <div style="text-align: center; color: #666;">
                     <i class="fas fa-exclamation-circle" style="font-size: 24px; margin-bottom: 8px;"></i>
-                    <div>Failed to load video. Please try again later.</div>
+                    <div>视频加载失败，请稍后重试。</div>
                 </div>
             </div>
         `;
