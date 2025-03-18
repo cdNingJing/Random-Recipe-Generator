@@ -1,0 +1,269 @@
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+@keyframes dealCard {
+    0% {
+        transform: translate(-50%, 100vh) scale(0.5);
+        opacity: 0;
+    }
+    60% {
+        transform: translate(var(--dealX), -50%) scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--dealX), -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes mergeToCenter {
+    0% {
+        transform: translate(var(--fromX), var(--fromY)) rotate(var(--fromRotate));
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+}
+
+@keyframes throwCard {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+    25% {
+        transform: translate(-50%, -150%) rotate(-40deg) scale(1.1);
+    }
+    50% {
+        transform: translate(-50%, -180%) rotate(0deg) scale(1.1);
+    }
+    75% {
+        transform: translate(-50%, -150%) rotate(40deg) scale(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    }
+}
+
+@keyframes shuffle {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    25% {
+        transform: translate(-50%, -60%) scale(1.05);
+    }
+    75% {
+        transform: translate(-50%, -40%) scale(0.95);
+    }
+}
+
+@keyframes gather {
+    0% {
+        transform: translate(var(--fromX), -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -80%) scale(1.1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes rotateCards {
+    0% {
+        transform: translate(-50%, -50%) rotateY(0deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotateY(360deg);
+    }
+}
+
+@keyframes flip {
+    0% {
+        transform: translate(-50%, -50%) rotateX(0deg) scale(1);
+    }
+    40% {
+        transform: translate(-50%, -80%) rotateX(180deg) scale(1.1);
+    }
+    80% {
+        transform: translate(-50%, -60%) rotateX(340deg) scale(1.05);
+    }
+    100% {
+        transform: translate(var(--finalX), -50%) rotateX(360deg) rotate(var(--finalRotate)) scale(1);
+    }
+}
+
+@keyframes showCardContent {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.card-draw-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.card-draw-container.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.card-stage {
+    position: relative;
+    width: 1200px;
+    height: 600px;
+    perspective: 2000px;
+    transform-style: preserve-3d;
+}
+
+.recipe-card-draw {
+    position: absolute;
+    width: 240px;
+    height: 360px;
+    left: 50%;
+    top: 50%;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform, opacity;
+}
+
+.recipe-card-draw .card-front,
+.recipe-card-draw .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    will-change: transform, opacity;
+    overflow: hidden;
+}
+
+.recipe-card-draw .card-front {
+    background: white;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.recipe-card-draw .card-back {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.recipe-card-draw.flipped .card-front {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.recipe-card-draw.flipped .card-back {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.dealing {
+    animation: dealCard 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.gathering {
+    animation: gather 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.shuffling {
+    animation: shuffle 0.8s ease-in-out infinite;
+}
+
+.flipping {
+    animation: flip 1.5s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
+    transform-origin: center center;
+}
+
+.side-card {
+    filter: brightness(0.7) grayscale(0.3);
+    transform: scale(0.8) !important;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.left-card-2 { transform: translate(calc(-50% - 380px), -50%) rotate(-15deg) !important; }
+.left-card-1 { transform: translate(calc(-50% - 200px), -50%) rotate(-8deg) !important; }
+.right-card-1 { transform: translate(calc(-50% + 200px), -50%) rotate(8deg) !important; }
+.right-card-2 { transform: translate(calc(-50% + 380px), -50%) rotate(15deg) !important; }
+
+/* 最终布局样式 */
+.final-layout .recipe-card-draw {
+    transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.final-layout .center-card {
+    transform: translate(-50%, -50%) scale(1.1) !important;
+    filter: brightness(1) !important;
+    z-index: 5;
+}
+
+.final-layout .left-card-2 { 
+    transform: translate(calc(-50% - 480px), -50%) scale(0.7) !important;
+    filter: brightness(0.5) grayscale(0.5);
+    z-index: 1;
+}
+
+.final-layout .left-card-1 { 
+    transform: translate(calc(-50% - 280px), -50%) scale(0.8) !important;
+    filter: brightness(0.6) grayscale(0.4);
+    z-index: 2;
+}
+
+.final-layout .right-card-1 { 
+    transform: translate(calc(-50% + 280px), -50%) scale(0.8) !important;
+    filter: brightness(0.6) grayscale(0.4);
+    z-index: 2;
+}
+
+.final-layout .right-card-2 { 
+    transform: translate(calc(-50% + 480px), -50%) scale(0.7) !important;
+    filter: brightness(0.5) grayscale(0.5);
+    z-index: 1;
+}
+
+/* 选中卡片的动画效果 */
+.selected-card-animation {
+    transform: translate(-50%, -50%) scale(1.2) !important;
+    filter: brightness(1) !important;
+    z-index: 10;
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.3) !important;
+} 

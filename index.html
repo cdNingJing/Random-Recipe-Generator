@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Recipe Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/cards.css">
+    <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header" id="header">
+            <h1>Random Recipe Generator</h1>
+            <p>Click the button below to discover amazing recipes!</p>
+            <div class="draw-button-container">
+                <button class="btn-draw" onclick="startDraw()">
+                    <i class="fas fa-dice"></i>
+                    <span>Draw Cards</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="content-area">
+            <div class="loading-spinner" id="loading">
+                <div class="spinner"></div>
+                <div style="margin-top: 12px;">Preparing recipe cards...</div>
+            </div>
+
+            <div class="error-message" id="error">
+                <i class="fas fa-exclamation-circle"></i>
+                Failed to fetch recipes. Please try again.
+            </div>
+
+            <div class="recipe-card" id="recipe"></div>
+
+            <div class="history-panel" id="history">
+                <h3>Recently Viewed</h3>
+                <div id="history-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-draw-container" id="cardDrawContainer">
+        <div class="card-stage" id="cardStage"></div>
+    </div>
+
+    <div class="floating-action" id="floatingAction" style="display: none;">
+        <button class="btn-float" onclick="startDraw()" title="Try Again">
+            <i class="fas fa-dice"></i>
+        </button>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/history.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 
